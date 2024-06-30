@@ -1,6 +1,27 @@
 from flask import Flask, render_template, request
+from flask_wtf import FlaskForm
+from wtforms import StringField, TextAreaField, SelectField, RadioField, SubmitField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
+
+class QuestionnaireForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    course = StringField('Course', validators=[DataRequired()])
+    short_answer = TextAreaField('Short-form Answer', validators=[DataRequired()], render_kw={"rows": 2})
+    long_answer = TextAreaField('Long-form Answer', validators=[DataRequired()], render_kw={"rows": 5})
+    satisfaction = SelectField('Overall Satisfaction', choices=[
+        ('', 'Select Satisfaction Level'),
+        ('very-satisfied', 'Very Satisfied'),
+        ('satisfied', 'Satisfied'),
+        ('neutral', 'Neutral'),
+        ('unsatisfied', 'Unsatisfied'),
+        ('very-unsatisfied', 'Very Unsatisfied')
+    ], validators=[DataRequired()])
+    recommend = RadioField('Would you recommend this course to others?', choices=[('yes', 'Yes'), ('no', 'No')], validators=[DataRequired()])
+    improvements = TextAreaField('Suggestions for Improvement', render_kw={"rows": 3})
+    submit = SubmitField('Submit')
 
 @app.route('/')
 def home():
@@ -12,24 +33,19 @@ def information():
 
 @app.route('/data_collection', methods=['GET', 'POST'])
 def data_collection():
-    if request.method == 'POST':
-        name = request.form['name']
-        student_number = request.form['student_number']
-        email = request.form['email']
-        grades = request.form['grades']
-        satisfaction = request.form['satisfaction']
-        suggestions = request.form['suggestions']
-        # Process the data or save it to a file
+    form = QuestionnaireForm()
+    if form.validate_on_submit():
         with open('data.txt', 'a') as f:
-            f.write(f"Name: {name}\n")
-            f.write(f"Student Number: {student_number}\n")
-            f.write(f"Email: {email}\n")
-            f.write(f"Grades: {grades}\n")
-            f.write(f"Satisfaction: {satisfaction}\n")
-            f.write(f"Suggestions: {suggestions}\n")
+            f.write(f"Name: {form.name.data}\n")
+            f.write(f"Course: {form.course.data}\n")
+            f.write(f"Short-form Answer: {form.short_answer.data}\n")
+            f.write(f"Long-form Answer: {form.long_answer.data}\n")
+            f.write(f"Satisfaction: {form.satisfaction.data}\n")
+            f.write(f"Recommend: {form.recommend.data}\n")
+            f.write(f"Improvements: {form.improvements.data}\n")
             f.write('---\n')
         return 'Form Submitted'
-    return render_template('data_collection.html')
+    return render_template('data_collection.html', form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)

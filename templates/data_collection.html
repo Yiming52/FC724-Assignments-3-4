@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Feedback Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Assignment 2.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Student Progress Data Collection</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Welcome</a></li>
+            <li><a href="{{ url_for('information') }}">Information</a></li>
+            <li><a href="{{ url_for('data_collection') }}">Data Collection</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <form method="POST" action="{{ url_for('data_collection') }}">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.name.label }}<br>
+                    {{ form.name(size=32) }}
+                </div>
+                <div>
+                    {{ form.course.label }}<br>
+                    {{ form.course(size=32) }}
+                </div>
+                <div>
+                    {{ form.short_answer.label }}<br>
+                    {{ form.short_answer(rows=2) }}
+                </div>
+                <div>
+                    {{ form.long_answer.label }}<br>
+                    {{ form.long_answer(rows=5) }}
+                </div>
+                <div>
+                    {{ form.satisfaction.label }}<br>
+                    {{ form.satisfaction() }}
+                </div>
+                <div>
+                    {{ form.recommend.label }}<br>
+                    {{ form.recommend() }}
+                </div>
+                <div>
+                    {{ form.improvements.label }}<br>
+                    {{ form.improvements(rows=3) }}
+                </div>
+                <button type="submit">{{ form.submit() }}</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Glasgow International College</p>
+    </footer>
+</body>
+</html>
