@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Collection - GIC Student Progress Tracker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='Assignment 2.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Student Progress Data Collection</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('home') }}">Welcome</a></li>
+            <li><a href="{{ url_for('information') }}">Information</a></li>
+            <li><a href="{{ url_for('data_collection') }}">Data Collection</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section>
+            <form action="{{ url_for('data_collection') }}" method="post">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <label for="student_number">Student Number:</label>
+                <input type="text" id="student_number" name="student_number" required><br><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <label for="grades">Grades Obtained:</label>
+                <input type="text" id="grades" name="grades"><br><br>
+
+                <label for="satisfaction">Overall Satisfaction:</label>
+                <select id="satisfaction" name="satisfaction">
+                    <option value="very_satisfied">Very Satisfied</option>
+                    <option value="satisfied">Satisfied</option>
+                    <option value="neutral">Neutral</option>
+                    <option value="dissatisfied">Dissatisfied</option>
+                    <option value="very_dissatisfied">Very Dissatisfied</option>
+                </select><br><br>
+
+                <label for="suggestions">Suggestions for Improvement:</label><br>
+                <textarea id="suggestions" name="suggestions" rows="4" cols="50"></textarea><br><br>
+
+                <input type="submit" value="Submit">
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Glasgow International College</p>
+    </footer>
+</body>
+</html>
